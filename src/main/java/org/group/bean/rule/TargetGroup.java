@@ -51,7 +51,7 @@ public class TargetGroup {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
-		result = prime * result + ((puids == null) ? 0 : puids.hashCode());
+//		result = prime * result + ((puids == null) ? 0 : puids.hashCode());
 		return result;
 	}
 
@@ -68,10 +68,10 @@ public class TargetGroup {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof Group)) {
+		if (!(obj instanceof TargetGroup)) {
 			return false;
 		}
-		Group other = (Group) obj;
+		TargetGroup other = (TargetGroup) obj;
 		if (key == null) {
 			if (other.key != null) {
 				return false;
@@ -79,13 +79,13 @@ public class TargetGroup {
 		} else if (!key.equals(other.key)) {
 			return false;
 		}
-		if (puids == null) {
-			if (other.puids != null) {
-				return false;
-			}
-		} else if (!puids.equals(other.puids)) {
-			return false;
-		}
+//		if (puids == null) {
+//			if (other.puids != null) {
+//				return false;
+//			}
+//		} else if (!puids.equals(other.puids)) {
+//			return false;
+//		}
 		return true;
 	}
 

@@ -39,7 +39,8 @@ import utils.log.Log4JUtils2;
 public class MainClass {
 	public static List<FixedGroup> fixedGroups = new ArrayList<FixedGroup>();
 
-	public static File sourceFile = new File("D:\\MT\\8871\\8871_T3_v1.036.xlsx");
+	public static File sourceFile = new File(
+			"D:\\MT\\8871\\8871_T3_v1.036.xlsx");
 
 	/**
 	 * @param args
@@ -56,9 +57,13 @@ public class MainClass {
 		List<Group> allGroups = new ArrayList<Group>();
 		allGroups.addAll(getGroupService.getFixedGroups());
 		allGroups.addAll(getGroupService.getDynamicGroups());
-		Log4JUtils2.getLogger().info("====== 排列组合Gourp.size=" + allGroups.size());
-		CombinationService.combiantion((Group[]) allGroups.toArray(new Group[allGroups.size()]));
-		Log4JUtils2.getLogger().info("====== 排列组合Gourp.size=" + CombinationService.resultGroupList.size());
+		Log4JUtils2.getLogger().info(
+				"====== 排列组合Gourp.size=" + allGroups.size());
+		CombinationService.combiantion((Group[]) allGroups
+				.toArray(new Group[allGroups.size()]));
+		Log4JUtils2.getLogger().info(
+				"====== 排列组合Gourp.size="
+						+ CombinationService.resultGroupList.size());
 
 		// 3.条件排列组合(重点在于两个CPU) --->演示两个CPU的情况
 
@@ -152,11 +157,13 @@ public class MainClass {
 							default:
 								Log4JUtils2.getLogger().error("******");
 							}
-							RuleCondition ruleCondition = new RuleCondition(conditionGroup, conditionQTY);
+							RuleCondition ruleCondition = new RuleCondition(
+									conditionGroup, conditionQTY);
 
 							Map<Integer, List<List<Group>>> targetResult = new HashMap<Integer, List<List<Group>>>();
 							for (int i = 0; i < 10; i++) {
-								targetResult.put(i, new ArrayList<List<Group>>());
+								targetResult.put(i,
+										new ArrayList<List<Group>>());
 							}
 							// 5.真枪实干->Max
 							for (List<Group> groups : CombinationService.resultGroupList) {
@@ -169,7 +176,9 @@ public class MainClass {
 								 * comPortBracket, groups); }
 								 */
 
-								int max = caculatorService.calculatorMax(prosesser, riserCard_1, riserCard_2, planar, comPortBracket, groups);
+								int max = caculatorService.calculatorMax(
+										prosesser, riserCard_1, riserCard_2,
+										planar, comPortBracket, groups);
 
 								/*
 								 * [B].性能太低,List放1600万条数据不现实; MinMaxRule
@@ -201,19 +210,27 @@ public class MainClass {
 		Log4JUtils2.getLogger().info("====== 优化RuleMap size:" + ruleMap.size());
 		int conditionIndex = 0;
 		int ruleIndex = 0;
-		ThreadPoolExecutor executorService = new ThreadPoolExecutor(10, 20, 10, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1200),
-		        new ThreadPoolExecutor.AbortPolicy());
-		for (Entry<RuleCondition, Map<Integer, List<List<Group>>>> entry : ruleMap.entrySet()) {
-			Log4JUtils2.getLogger().info("===== Start 第" + (++conditionIndex) + "组;\t条件为: " + entry.getKey());
+		ThreadPoolExecutor executorService = new ThreadPoolExecutor(120, 150,
+				10, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1200),
+				new ThreadPoolExecutor.AbortPolicy());
+		for (Entry<RuleCondition, Map<Integer, List<List<Group>>>> entry : ruleMap
+				.entrySet()) {
+			Log4JUtils2.getLogger().info(
+					"===== Start 第" + (++conditionIndex) + "组;\t条件为: "
+							+ entry.getKey());
 
 			Map<Integer, List<List<Group>>> targetResults = entry.getValue();
 
-			for (Entry<Integer, List<List<Group>>> targetresult : targetResults.entrySet()) {
+			for (Entry<Integer, List<List<Group>>> targetresult : targetResults
+					.entrySet()) {
 				if (targetresult.getValue().size() == 0) {
-					Log4JUtils2.getLogger().info("====== 该条件下 Max=" + targetresult.getKey() + "的Rule 不存在");
+					Log4JUtils2.getLogger().info(
+							"====== 该条件下 Max=" + targetresult.getKey()
+									+ "的Rule 不存在");
 				} else {
 					/* ====================多线程处理==================== */
-					OptimizeService command = new OptimizeService(minMaxRules, entry.getKey(), conditionIndex, targetresult);
+					OptimizeService command = new OptimizeService(minMaxRules,
+							entry.getKey(), conditionIndex, targetresult);
 					executorService.execute(command);
 				}
 			}
@@ -225,9 +242,14 @@ public class MainClass {
 				System.out.println("线程结束了！");
 				break;
 			} else {
-				Log4JUtils2.getLogger().info("====== 执行线程数:" + executorService.getActiveCount());
-				Log4JUtils2.getLogger().info("====== 队列大小:" + executorService.getQueue().size());
-				Log4JUtils2.getLogger().info("====== 队列中排队的任务的数量:" + (1200 - executorService.getQueue().remainingCapacity()));
+				Log4JUtils2.getLogger().info(
+						"====== 执行线程数:" + executorService.getActiveCount());
+				Log4JUtils2.getLogger().info(
+						"====== 队列大小:" + executorService.getQueue().size());
+				Log4JUtils2.getLogger().info(
+						"====== 队列中排队的任务的数量:"
+								+ (1200 - executorService.getQueue()
+										.remainingCapacity()));
 			}
 			try {
 				Thread.sleep(5000);
@@ -242,18 +264,19 @@ public class MainClass {
 		Log4JUtils2.getLogger().info("======");
 		Log4JUtils2.getLogger().info("======");
 		Log4JUtils2.getLogger().info("======");
-		Log4JUtils2.getLogger().info("====== 优化后的Rule size: " + ruleIndex);
+		Log4JUtils2.getLogger().info("====== 优化后的Rule size: " + minMaxRules.size());
 		for (MinMaxRule minMaxRule : minMaxRules) {
 			setTargetGroups.add(minMaxRule.getTargetGroup());
 		}
-		Log4JUtils2.getLogger().info("====== 需要建立TargetGroup.size: " + ruleIndex);
+		Log4JUtils2.getLogger().info(
+				"====== 需要建立TargetGroup.size: " + setTargetGroups.size());
 
 		for (MinMaxRule minMaxRule : minMaxRules) {
 			setTargetGroups.add(minMaxRule.getTargetGroup());
-			System.out.println(minMaxRule.formatRealRule());
+			Log4JUtils2.getLogger().info(minMaxRule.formatRealRule());
 		}
 		for (TargetGroup targetGroup : setTargetGroups) {
-			System.out.println(targetGroup);
+			Log4JUtils2.getLogger().info(targetGroup);
 		}
 	}
 }

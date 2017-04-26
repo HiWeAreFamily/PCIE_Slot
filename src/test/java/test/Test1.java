@@ -77,4 +77,13 @@ public class Test1 {
 		 * }
 		 */
 	}
+	
+	@Test 
+	public void addSet(){
+		String a=new String("123");
+		String b=new String("123");
+		System.out.println(a.hashCode());
+		System.out.println(b.hashCode());
+//		hashCode
+	}
 }

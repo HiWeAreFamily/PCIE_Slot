@@ -62,12 +62,12 @@ public class MinMaxRule implements Comparable<MinMaxRule> {
 	 * conditionGroup; conditionQTY = conditionQTY; this.max = max; }
 	 */
 
-	public MinMaxRule(String index, List<String> conditionGroup, List<Integer> conditionQTY, List<Group> targetGroup, Integer max) {
+	public MinMaxRule(String index, List<String> conditionGroup, List<Integer> conditionQTY, List<Group> optimizeGroup, Integer max) {
 		super();
 		this.index = index;
 		this.conditionGroup = conditionGroup;
 		this.conditionQTY = conditionQTY;
-		this.targetGroup = getFcsFromGroup(targetGroup);
+		this.targetGroup = getFcsFromGroup(optimizeGroup);
 		this.max = max;
 	}
 
@@ -75,11 +75,12 @@ public class MinMaxRule implements Comparable<MinMaxRule> {
 		this(index, condition.getConditionGroup(), condition.getConditionQTY(), optimizeGroup, max);
 	}
 
-	public TargetGroup getFcsFromGroup(List<Group> groups) {
+	public TargetGroup getFcsFromGroup(List<Group> optimizeGroup) {
 		String key = "";
 		List<String> fcs = new ArrayList<String>();
-		Log4JUtils2.getLogger().debug("<<<<<<" + groups);
-		for (Group group : groups) {
+		Log4JUtils2.getLogger().debug("<<<<<<" + optimizeGroup);
+		Collections.sort(optimizeGroup);
+		for (Group group : optimizeGroup) {
 			if (group instanceof FixedGroup) {
 				key += "_FixedGroup" + group.getKey().replace(",", "").replace("[", "").replace("]", "").replace(";", "").replace(" ", "");
 				fcs.addAll(group.getPuids());
@@ -90,7 +91,7 @@ public class MinMaxRule implements Comparable<MinMaxRule> {
 			}
 		}
 		Log4JUtils2.getLogger().debug("<<<<<< FCs:" + fcs);
-		Collections.sort(groups);
+		Collections.sort(optimizeGroup);
 		TargetGroup targetGroup = new TargetGroup("8871_SLOT_" + key, fcs);
 		return targetGroup;
 
