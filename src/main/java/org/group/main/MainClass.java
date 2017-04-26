@@ -45,8 +45,9 @@ public class MainClass {
 	/**
 	 * @param args
 	 * @throws IOException
+	 * @throws InterruptedException 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		System.out.println("start...");
 
 		// 1.加载数据源 .获得Group
@@ -258,6 +259,7 @@ public class MainClass {
 				e.printStackTrace();
 			}
 		}
+		Thread.sleep(10000);
 		// 6.展示结果
 		Set<TargetGroup> setTargetGroups = new LinkedHashSet<TargetGroup>();
 		Log4JUtils2.getLogger().info("======");
@@ -278,5 +280,6 @@ public class MainClass {
 		for (TargetGroup targetGroup : setTargetGroups) {
 			Log4JUtils2.getLogger().info(targetGroup);
 		}
+		Log4JUtils2.getLogger().info("======全部结束!");
 	}
 }
