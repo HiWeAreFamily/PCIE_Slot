@@ -3,17 +3,14 @@ package org.group.bean.rule;
 import java.util.List;
 
 public class DynamicGroup extends Group {
-	
+
 	public List<Integer> idSlots;
 	public List<Integer> extraSlot;
-
 
 	public DynamicGroup() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	
 
 	/**
 	 * @return the idSlots
@@ -65,7 +62,6 @@ public class DynamicGroup extends Group {
 	public void setExtraSlot(List<Integer> extraSlot) {
 		this.extraSlot = extraSlot;
 	}
-
 
 	/*
 	 * (non-Javadoc)

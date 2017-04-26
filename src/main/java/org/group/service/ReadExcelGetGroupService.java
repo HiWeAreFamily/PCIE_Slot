@@ -153,8 +153,8 @@ public class ReadExcelGetGroupService {
 							dynamicGroupsMap.put(idSlots, listFc);
 						}
 
-					} else if ((slotRule.contains("(Slots 3 only for FC A5FN)") || slotRule.contains("(Slots 3 only for A5FN)"))
-					        && !slotRule.contains("(Slots 8 only for FC A5R5)")) {
+					} else if ((slotRule.contains("(Slots 3 only for FC A5FN)") || slotRule
+							.contains("(Slots 3 only for A5FN)")) && !slotRule.contains("(Slots 8 only for FC A5R5)")) {
 						String idSlots = getSlotsForRuleStringForGroup(pciSlot.getSlotRule());
 						idSlots = idSlots + "A5FN;";
 						Log4JUtils2.getLogger().debug("<<<<<< DynamicGroup-key:" + idSlots);
@@ -166,8 +166,8 @@ public class ReadExcelGetGroupService {
 							dynamicGroupsMap.put(idSlots, listFc);
 						}
 
-					} else if ((slotRule.contains("(Slots 3 only for FC A5FN)") || slotRule.contains("(Slots 3 only for A5FN)"))
-					        && slotRule.contains("(Slots 8 only for FC A5R5)")) {
+					} else if ((slotRule.contains("(Slots 3 only for FC A5FN)") || slotRule
+							.contains("(Slots 3 only for A5FN)")) && slotRule.contains("(Slots 8 only for FC A5R5)")) {
 						String idSlots = getSlotsForRuleStringForGroup(pciSlot.getSlotRule());
 						idSlots = idSlots + "A5FN_A5R5;";
 						Log4JUtils2.getLogger().debug("<<<<<< DynamicGroup-key:" + idSlots);
@@ -277,7 +277,7 @@ public class ReadExcelGetGroupService {
 		Matcher m = p.matcher(slotFor2Cpu);
 		String result = m.replaceAll("");
 		for (int i = 0; i < result.length(); i++) {
-			String k1=result.substring(i, i + 1);
+			String k1 = result.substring(i, i + 1);
 			Integer k = Integer.valueOf(k1);
 			idSlots.add(k);
 		}

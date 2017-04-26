@@ -40,20 +40,22 @@ public class MinMaxRule implements Comparable<MinMaxRule> {
 	 * @return
 	 */
 	public String formatDebugRule() {
-		return "\r\nrule rule_8871_SLOT_" + index + " extends MinMax {\r\n" + "\tMultipleConditionalGroups=" + MultipleConditionalGroups
-		        + ";\r\n\tConditionGroup=" + formatList(conditionGroup) + ";\r\n\tConditionQualifier=" + conditionQualifier + ";\r\n\tConditionQTY="
-		        + formatList(conditionQTY) + ";\r\n\tTargetGroup=" + targetGroup.key + ";\r\n\tTargetGroup=" + formatList(targetGroup.getPuids())
-		        + ";\r\n\tMax=" + max + ";\r\n\tProductId=" + productId + ";\r\n}\r\n";
+		return "\r\nrule rule_8871_SLOT_" + index + " extends MinMax {\r\n" + "\tMultipleConditionalGroups="
+				+ MultipleConditionalGroups + ";\r\n\tConditionGroup=" + formatList(conditionGroup)
+				+ ";\r\n\tConditionQualifier=" + conditionQualifier + ";\r\n\tConditionQTY=" + formatList(conditionQTY)
+				+ ";\r\n\tTargetGroup=" + targetGroup.key + ";\r\n\tTargetGroup=" + formatList(targetGroup.getPuids())
+				+ ";\r\n\tMax=" + max + ";\r\n\tProductId=" + productId + ";\r\n}\r\n";
 	}
 
 	/**
 	 * @return Final Rule
 	 */
 	public String formatRealRule() {
-		return "\r\nrule rule_8871_SLOT_" + index + " extends MinMax {\r\n" + "\tMultipleConditionalGroups=" + MultipleConditionalGroups
-		        + ";\r\n\tConditionGroup=" + formatList(conditionGroup) + ";\r\n\tConditionQualifier=" + conditionQualifier + ";\r\n\tConditionQTY="
-		        + formatList(conditionQTY) + ";\r\n\tTargetGroup=" + targetGroup.key + ";\r\n\tMax=" + max + ";\r\n\tProductId=" + productId
-		        + ";\r\n}\r\n";
+		return "\r\nrule rule_8871_SLOT_" + index + " extends MinMax {\r\n" + "\tMultipleConditionalGroups="
+				+ MultipleConditionalGroups + ";\r\n\tConditionGroup=" + formatList(conditionGroup)
+				+ ";\r\n\tConditionQualifier=" + conditionQualifier + ";\r\n\tConditionQTY=" + formatList(conditionQTY)
+				+ ";\r\n\tTargetGroup=" + targetGroup.key + ";\r\n\tMax=" + max + ";\r\n\tProductId=" + productId
+				+ ";\r\n}\r\n";
 	}
 
 	/*
@@ -62,12 +64,13 @@ public class MinMaxRule implements Comparable<MinMaxRule> {
 	 * conditionGroup; conditionQTY = conditionQTY; this.max = max; }
 	 */
 
-	public MinMaxRule(String index, List<String> conditionGroup, List<Integer> conditionQTY, List<Group> optimizeGroup, Integer max) {
+	public MinMaxRule(String index, List<String> conditionGroup, List<Integer> conditionQTY, List<Group> optimizeGroup,
+			Integer max) {
 		super();
 		this.index = index;
 		this.conditionGroup = conditionGroup;
 		this.conditionQTY = conditionQTY;
-		this.targetGroup = getFcsFromGroup(optimizeGroup);
+		this.targetGroup = this.getFcsFromGroup(optimizeGroup);
 		this.max = max;
 	}
 
@@ -75,18 +78,22 @@ public class MinMaxRule implements Comparable<MinMaxRule> {
 		this(index, condition.getConditionGroup(), condition.getConditionQTY(), optimizeGroup, max);
 	}
 
-	public TargetGroup getFcsFromGroup(List<Group> optimizeGroup) {
+	private TargetGroup getFcsFromGroup(List<Group> optimizeGroup) {
 		String key = "";
 		List<String> fcs = new ArrayList<String>();
 		Log4JUtils2.getLogger().debug("<<<<<<" + optimizeGroup);
 		Collections.sort(optimizeGroup);
 		for (Group group : optimizeGroup) {
 			if (group instanceof FixedGroup) {
-				key += "_FixedGroup" + group.getKey().replace(",", "").replace("[", "").replace("]", "").replace(";", "").replace(" ", "");
+				key += "_FixedGroup"
+						+ group.getKey().replace(",", "").replace("[", "").replace("]", "").replace(";", "")
+								.replace(" ", "");
 				fcs.addAll(group.getPuids());
 			}
 			if (group instanceof DynamicGroup) {
-				key += "_DynamicGroup" + group.getKey().replace(",", "").replace("[", "").replace("]", "").replace(";", "").replace(" ", "");
+				key += "_DynamicGroup"
+						+ group.getKey().replace(",", "").replace("[", "").replace("]", "").replace(";", "")
+								.replace(" ", "");
 				fcs.addAll(group.getPuids());
 			}
 		}

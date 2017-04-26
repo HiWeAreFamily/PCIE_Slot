@@ -39,13 +39,12 @@ import utils.log.Log4JUtils2;
 public class MainClass {
 	public static List<FixedGroup> fixedGroups = new ArrayList<FixedGroup>();
 
-	public static File sourceFile = new File(
-			"D:\\MT\\8871\\8871_T3_v1.036.xlsx");
+	public static File sourceFile = new File("D:\\MT\\8871\\8871_T3_v1.036.xlsx");
 
 	/**
 	 * @param args
 	 * @throws IOException
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	public static void main(String[] args) throws IOException, InterruptedException {
 		System.out.println("start...");
@@ -58,13 +57,11 @@ public class MainClass {
 		List<Group> allGroups = new ArrayList<Group>();
 		allGroups.addAll(getGroupService.getFixedGroups());
 		allGroups.addAll(getGroupService.getDynamicGroups());
-		Log4JUtils2.getLogger().info(
-				"====== 排列组合Gourp.size=" + allGroups.size());
-		CombinationService.combiantion((Group[]) allGroups
-				.toArray(new Group[allGroups.size()]));
-		Log4JUtils2.getLogger().info(
-				"====== 排列组合Gourp.size="
-						+ CombinationService.resultGroupList.size());
+		Log4JUtils2.getLogger().info("====== 排列组合Gourp.size=" + allGroups.size());
+
+		Group[] FDGroup = allGroups.toArray(new Group[allGroups.size()]);
+		CombinationService.combiantion(FDGroup);
+		Log4JUtils2.getLogger().info("====== 排列组合Gourp.size=" + CombinationService.resultGroupList.size());
 
 		// 3.条件排列组合(重点在于两个CPU) --->演示两个CPU的情况
 
@@ -83,88 +80,13 @@ public class MainClass {
 						// TODO Lemon confirm? 1cpu allow A5AN
 						for (COMPortBracket comPortBracket : Conditions.comPortBracketList) {
 							conditionCount++;
-							// 条件排列
-							List<String> conditionGroup = new ArrayList<String>();
-							List<Integer> conditionQTY = new ArrayList<Integer>();
-							if ("1CPU".equals(prosesser.getFc())) {
-								conditionGroup.add("8871_PROC_ALL");
-								conditionQTY.add(1);
-							} else {
-								conditionGroup.add("8871_PROC_ALL");
-								conditionQTY.add(2);
-							}
-							switch (riserCard_1.getFc()) {
-							case "None":
-								conditionGroup.add("8871_PCI_Riser1");
-								conditionQTY.add(0);
-								break;
-							case "A5FN":
-								conditionGroup.add("8871_A5FN");
-								conditionQTY.add(1);
-								break;
-							case "A5FR":
-								conditionGroup.add("8871_PCI_Riser_A5FR");
-								conditionQTY.add(1);
-								break;
-							case "A5FP":
-								conditionGroup.add("8871_PCI_Riser_A5FP");
-								conditionQTY.add(1);
-								break;
-							case "A5FQ":
-								conditionGroup.add("8871_PCI_Riser_A5FQ");
-								conditionQTY.add(1);
-								break;
-							default:
-								Log4JUtils2.getLogger().error("******");
-							}
-							switch (riserCard_2.getFc()) {
-							case "None":
-								conditionGroup.add("8871_PCI_Riser2");
-								conditionQTY.add(0);
-								break;
-							case "A5R5":
-								conditionGroup.add("8871_A5R5");
-								conditionQTY.add(1);
-								break;
-							case "A5R6":
-								conditionGroup.add("8871_A5R6");
-								conditionQTY.add(1);
-								break;
-							default:
-								Log4JUtils2.getLogger().error("******");
-							}
-							switch (planar.getFc()) {
-							case "8871_MB_ATE4":
-								conditionGroup.add("8871_MB_ATE4");
-								conditionQTY.add(1);
-								break;
-							case "8871_MB_AUAF":
-								conditionGroup.add("8871_MB_AUAF");
-								conditionQTY.add(1);
-								break;
-							default:
-								Log4JUtils2.getLogger().error("******");
-							}
 
-							switch (comPortBracket.getFc()) {
-							case "None":
-								conditionGroup.add("8871_A5AN");
-								conditionQTY.add(0);
-								break;
-							case "A5AN":
-								conditionGroup.add("8871_A5AN");
-								conditionQTY.add(1);
-								break;
-							default:
-								Log4JUtils2.getLogger().error("******");
-							}
-							RuleCondition ruleCondition = new RuleCondition(
-									conditionGroup, conditionQTY);
+							RuleCondition ruleCondition = Conditions.createRuleCondition(prosesser, riserCard_1,
+									riserCard_2, planar, comPortBracket);
 
 							Map<Integer, List<List<Group>>> targetResult = new HashMap<Integer, List<List<Group>>>();
 							for (int i = 0; i < 10; i++) {
-								targetResult.put(i,
-										new ArrayList<List<Group>>());
+								targetResult.put(i, new ArrayList<List<Group>>());
 							}
 							// 5.真枪实干->Max
 							for (List<Group> groups : CombinationService.resultGroupList) {
@@ -177,9 +99,8 @@ public class MainClass {
 								 * comPortBracket, groups); }
 								 */
 
-								int max = caculatorService.calculatorMax(
-										prosesser, riserCard_1, riserCard_2,
-										planar, comPortBracket, groups);
+								int max = caculatorService.calculatorMax(prosesser, riserCard_1, riserCard_2, planar,
+										comPortBracket, groups);
 
 								/*
 								 * [B].性能太低,List放1600万条数据不现实; MinMaxRule
@@ -205,33 +126,29 @@ public class MainClass {
 			}
 
 		}
-		Log4JUtils2.getLogger().info("====== 组合条件的可能种数:" + conditionCount);
-		Log4JUtils2.getLogger().info("====== RuleIndex" + ruleIndexAll);
+		Log4JUtils2.getLogger().info("====== 组合条件的种数:" + conditionCount);
+		Log4JUtils2.getLogger().info("====== RuleIndex :" + ruleIndexAll);
 		// 5.压缩算法+多线程优化性能
-		Log4JUtils2.getLogger().info("====== 优化RuleMap size:" + ruleMap.size());
+		Log4JUtils2.getLogger().info("====== 需要优化RuleMap size:" + ruleMap.size());
 		int conditionIndex = 0;
 		int ruleIndex = 0;
-		ThreadPoolExecutor executorService = new ThreadPoolExecutor(120, 150,
-				10, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1200),
-				new ThreadPoolExecutor.AbortPolicy());
-		for (Entry<RuleCondition, Map<Integer, List<List<Group>>>> entry : ruleMap
-				.entrySet()) {
-			Log4JUtils2.getLogger().info(
-					"===== Start 第" + (++conditionIndex) + "组;\t条件为: "
-							+ entry.getKey());
+		ThreadPoolExecutor executorService = new ThreadPoolExecutor(100, 150, 10, TimeUnit.SECONDS,
+				new ArrayBlockingQueue<Runnable>(1200), new ThreadPoolExecutor.AbortPolicy());
+		
+		
+		for (Entry<RuleCondition, Map<Integer, List<List<Group>>>> entry : ruleMap.entrySet()) {
+			Log4JUtils2.getLogger().info("===== Start 第" + (++conditionIndex) + "组;\t条件为: " + entry.getKey());
 
-			Map<Integer, List<List<Group>>> targetResults = entry.getValue();
+			Map<Integer, List<List<Group>>> maxAndTargetResults = entry.getValue();
 
-			for (Entry<Integer, List<List<Group>>> targetresult : targetResults
-					.entrySet()) {
-				if (targetresult.getValue().size() == 0) {
-					Log4JUtils2.getLogger().info(
-							"====== 该条件下 Max=" + targetresult.getKey()
-									+ "的Rule 不存在");
+			for (Entry<Integer, List<List<Group>>> maxAndTargetResult : maxAndTargetResults.entrySet()) {
+				
+				if (maxAndTargetResult.getValue().size() == 0) {
+					Log4JUtils2.getLogger().info("====== 该条件下 Max=" + maxAndTargetResult.getKey() + "的Rule 不存在");
 				} else {
 					/* ====================多线程处理==================== */
-					OptimizeService command = new OptimizeService(minMaxRules,
-							entry.getKey(), conditionIndex, targetresult);
+					OptimizeService command = new OptimizeService(minMaxRules, entry.getKey(), conditionIndex,
+							maxAndTargetResult);
 					executorService.execute(command);
 				}
 			}
@@ -243,14 +160,10 @@ public class MainClass {
 				System.out.println("线程结束了！");
 				break;
 			} else {
-				Log4JUtils2.getLogger().info(
-						"====== 执行线程数:" + executorService.getActiveCount());
-				Log4JUtils2.getLogger().info(
-						"====== 队列大小:" + executorService.getQueue().size());
-				Log4JUtils2.getLogger().info(
-						"====== 队列中排队的任务的数量:"
-								+ (1200 - executorService.getQueue()
-										.remainingCapacity()));
+				Log4JUtils2.getLogger().info("====== 执行线程数:" + executorService.getActiveCount());
+				Log4JUtils2.getLogger().info("====== 队列中排队的任务的数量:" + executorService.getQueue().size());
+//				Log4JUtils2.getLogger().info(
+//						"====== 队列中排队的任务的数量:" + (1200 - executorService.getQueue().remainingCapacity()));
 			}
 			try {
 				Thread.sleep(5000);
@@ -270,8 +183,7 @@ public class MainClass {
 		for (MinMaxRule minMaxRule : minMaxRules) {
 			setTargetGroups.add(minMaxRule.getTargetGroup());
 		}
-		Log4JUtils2.getLogger().info(
-				"====== 需要建立TargetGroup.size: " + setTargetGroups.size());
+		Log4JUtils2.getLogger().info("====== 需要建立TargetGroup.size: " + setTargetGroups.size());
 
 		for (MinMaxRule minMaxRule : minMaxRules) {
 			setTargetGroups.add(minMaxRule.getTargetGroup());

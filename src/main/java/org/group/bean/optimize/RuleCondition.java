@@ -1,6 +1,5 @@
 package org.group.bean.optimize;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RuleCondition {
@@ -51,6 +50,38 @@ public class RuleCondition {
 	@Override
 	public String toString() {
 		return "RuleCondition [conditionGroup=" + conditionGroup + ", conditionQTY=" + conditionQTY + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((conditionGroup == null) ? 0 : conditionGroup.toString().hashCode());
+		result = prime * result + ((conditionQTY == null) ? 0 : conditionQTY.toString().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RuleCondition other = (RuleCondition) obj;
+		if (conditionGroup == null) {
+			if (other.conditionGroup != null)
+				return false;
+		} else if (!conditionGroup.toString().equals(other.conditionGroup.toString()))
+			return false;
+
+		if (conditionQTY == null) {
+			if (other.conditionQTY != null)
+				return false;
+		} else if (!conditionQTY.toString().equals(other.conditionQTY.toString()))
+			return false;
+		return true;
 	}
 
 }

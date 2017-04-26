@@ -51,7 +51,7 @@ public class TargetGroup {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
-//		result = prime * result + ((puids == null) ? 0 : puids.hashCode());
+		// result = prime * result + ((puids == null) ? 0 : puids.hashCode());
 		return result;
 	}
 
@@ -79,13 +79,13 @@ public class TargetGroup {
 		} else if (!key.equals(other.key)) {
 			return false;
 		}
-//		if (puids == null) {
-//			if (other.puids != null) {
-//				return false;
-//			}
-//		} else if (!puids.equals(other.puids)) {
-//			return false;
-//		}
+		// if (puids == null) {
+		// if (other.puids != null) {
+		// return false;
+		// }
+		// } else if (!puids.equals(other.puids)) {
+		// return false;
+		// }
 		return true;
 	}
 
@@ -102,12 +102,12 @@ public class TargetGroup {
 		// description = "PCIe Adapters";
 		// }
 		return "group 8871_SLOT_" + key + " +extends ProductGroup {\r\n" + "\tgroupPuids=" + formatList(puids)
-		        + ";\r\n\tdescription = \"PCIe Adapters\";\r\n}";
+				+ ";\r\n\tdescription = \"PCIe Adapters\";\r\n}";
 	}
 
 	private String formatList(List<String> list) {
-		for(int i=0;i<list.size();i++){
-			list.set(i, "'"+list.get(i)+"'");
+		for (int i = 0; i < list.size(); i++) {
+			list.set(i, "'" + list.get(i) + "'");
 		}
 		String str = list.toString();
 

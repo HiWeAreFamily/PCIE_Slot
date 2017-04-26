@@ -15,7 +15,6 @@ public class SystemPlanar {
 		// TODO Auto-generated constructor stub
 	}
 
-	
 	/**
 	 * @return the fc
 	 */
@@ -24,7 +23,8 @@ public class SystemPlanar {
 	}
 
 	/**
-	 * @param fc the fc to set
+	 * @param fc
+	 *            the fc to set
 	 */
 	public void setFc(String fc) {
 		Fc = fc;
