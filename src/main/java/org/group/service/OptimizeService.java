@@ -45,20 +45,28 @@ public class OptimizeService extends Thread {
 
 	@Override
 	public void run() {
-
+		List<List<Group>> optimizeGroups = new ArrayList<List<Group>>();
 		try {
 			List<List<Group>> targetGroups = maxTargetresult.getValue();
-			List<List<Group>> optimizeGroups = optimizeGroupList(targetGroups);
+			optimizeGroups = optimizeGroupList(targetGroups);
 			Log4JUtils2.getLogger().info(
 					"====== 该条件下 Max=" + maxTargetresult.getKey() + ";压缩前数量:" + targetGroups.size() + "压缩后数量:"
 							+ optimizeGroups.size());
-			// Debug :显示优化前的TargetGroups list
-			// int i = 0;
-			// for (List<Group> target : targetresult.getValue()) {
-			// Log4JUtils2.getLogger().info("<<<<<< " + (++i) + "" +
-			// target);
-			// }
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Log4JUtils2.getLogger().error("****** ERROR 异常信息：" + e.getMessage());
+			// Log4JUtils2.getLogger().error("异常对象：" + e.);
+			Log4JUtils2.getLogger().error("****** ERROR 调用堆栈：\n" + e.fillInStackTrace().getMessage());
+			Log4JUtils2.getLogger().error("****** ERROR 触发方法：" + e.getStackTrace());
+		}
+		// Debug :显示优化前的TargetGroups list
+		// int i = 0;
+		// for (List<Group> target : targetresult.getValue()) {
+		// Log4JUtils2.getLogger().info("<<<<<< " + (++i) + "" +
+		// target);
+		// }
 
+		try {
 			/* 呈现具体的rule */
 			int ruleIndex = 0;
 			for (List<Group> optimizeGroup : optimizeGroups) {
