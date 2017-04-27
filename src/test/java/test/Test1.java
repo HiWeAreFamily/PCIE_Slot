@@ -49,14 +49,10 @@ public class Test1 {
 	@Test
 	public void testListIterator() {
 		List<String> l = new ArrayList();
-
 		l.add("aa");
-
 		l.add("bb");
 		l.add("bb");
-
 		l.add("cc");
-
 		ListIterator<String> iter = l.listIterator();
 		while (iter.hasNext()) {
 			String str = iter.next();

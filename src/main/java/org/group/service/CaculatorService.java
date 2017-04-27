@@ -34,8 +34,8 @@ public class CaculatorService {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public int calculatorMax(Processer prosesser, RiserCard riserCard_1, RiserCard riserCard_2, SystemPlanar planar,
-			COMPortBracket comPortBracket, List<Group> groups) {
+	public int calculatorMax(Processer prosesser, RiserCard riserCard_1, RiserCard riserCard_2, SystemPlanar planar, COMPortBracket comPortBracket,
+	        List<Group> groups) {
 		int max = 0;
 		// 9,1,2,3,4,5,6,7,8
 		List<Integer> provideSlots = new ArrayList<Integer>();
@@ -66,7 +66,7 @@ public class CaculatorService {
 			provideSlots.removeAll((a5anRemoveSlot));
 		}
 		Log4JUtils2.getLogger().debug("====== ProvideSlots:" + ListInteger.listToString(provideSlots));
-		
+
 		// 2.当前条件下该组合可能占用那些1,3槽位;
 		Set<Integer> cardSlotsFixedDynamic = new LinkedHashSet<Integer>();
 		Set<Integer> cardSlotsFixed = new LinkedHashSet<Integer>();
@@ -83,8 +83,7 @@ public class CaculatorService {
 				if ("Special_AS95;".equals(dynamicGroup.getKey())) {
 					// A.AS95 在这个条件下: 可以放得slot
 					// TODO lemon confirm
-					List<Integer> idDynamicSlot = getSlotSpecial_AS95(prosesser, riserCard_1, riserCard_2, planar,
-							comPortBracket);
+					List<Integer> idDynamicSlot = getSlotSpecial_AS95(prosesser, riserCard_1, riserCard_2, planar, comPortBracket);
 					cardSlotsDynamic.addAll(idDynamicSlot);
 				} else if (dynamicGroup.getKey().endsWith("A5FN;")) {
 					// B.
@@ -130,7 +129,6 @@ public class CaculatorService {
 				max++;
 			}
 		}
-
 		return max;
 	}
 
@@ -153,8 +151,8 @@ public class CaculatorService {
 	 * @param comPortBracket
 	 * @return
 	 */
-	public List<Integer> getSlotSpecial_AS95(Processer prosesser, RiserCard riserCard_1, RiserCard riserCard_2,
-			SystemPlanar planar, COMPortBracket comPortBracket) {
+	public List<Integer> getSlotSpecial_AS95(Processer prosesser, RiserCard riserCard_1, RiserCard riserCard_2, SystemPlanar planar,
+	        COMPortBracket comPortBracket) {
 		// 1CPU : 1, 2 (A5FP/A5FQ ) / 3.4 ( A5FN )
 		// 2CPU : 1, 2, 6, 7 ( riser 1: A5FP/A5FQ & riser 2 : A5R6)
 		// 3.4.5.8 (riser 1: A5FN& riser 2 :A5R5)
@@ -175,19 +173,25 @@ public class CaculatorService {
 			}
 
 		} else if ("2CPU".equals(prosesser.getFc())) {
-			if (("A5FP".equals(riserCard_1.getFc()) || "A5FQ".equals(riserCard_1.getFc()))
-					&& "A5R6".equals(riserCard_2.getFc())) {
-				Integer[] slot = { 1, 2, 6, 7 };
-				idfixedSlotsforAs95 = Arrays.asList(slot);
+			if ("A5FP".equals(riserCard_1.getFc()) || "A5FQ".equals(riserCard_1.getFc())) {
+				if ("A5R6".equals(riserCard_2.getFc())) {
+					Integer[] slot = { 1, 2, 6, 7 };
+					idfixedSlotsforAs95 = Arrays.asList(slot);
+				} else {
+					Integer[] slot = { 1, 2 };
+					idfixedSlotsforAs95 = Arrays.asList(slot);
+				}
+
 			}
-			if ("A5FN".equals(riserCard_1.getFc()) && "A5R5".equals(riserCard_2.getFc())) {
-				Integer[] slot = { 3, 4, 5, 8 };
-				idfixedSlotsforAs95 = Arrays.asList(slot);
+			if ("A5FN".equals(riserCard_1.getFc())) {
+				if ("A5R5".equals(riserCard_2.getFc())) {
+					Integer[] slot = { 3, 4, 5, 8 };
+					idfixedSlotsforAs95 = Arrays.asList(slot);
+				} else {
+					Integer[] slot = { 3, 4 };
+					idfixedSlotsforAs95 = Arrays.asList(slot);
+				}
 			}
-			// if("A5FN".equals(riserCard_1.getFc())){
-			// Integer[] slot={3,4};
-			// idfixedSlotsforAs95= Arrays.asList(slot);
-			// }
 		} else {
 			Log4JUtils2.getLogger().error("******");
 		}
