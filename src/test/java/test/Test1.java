@@ -53,15 +53,17 @@ public class Test1 {
 		l.add("aa");
 
 		l.add("bb");
+		l.add("bb");
 
 		l.add("cc");
 
 		ListIterator<String> iter = l.listIterator();
 		while (iter.hasNext()) {
 			String str = iter.next();
-			if ("cc".equals(str)) {
+			if ("bb".equals(str)) {
 				iter.remove();
 				iter.add("ddd");
+				iter.add("bb");
 //				iter.previous();
 			}
 			System.out.println(str);
