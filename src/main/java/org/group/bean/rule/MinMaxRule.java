@@ -70,7 +70,28 @@ public class MinMaxRule implements Comparable<MinMaxRule> {
 		this.index = index;
 		this.conditionGroup = conditionGroup;
 		this.conditionQTY = conditionQTY;
-		this.targetGroup = this.getFcsFromGroup(optimizeGroup);
+//		this.targetGroup = this.getFcsFromGroup(optimizeGroup);
+		String key = "";
+		List<String> fcs = new ArrayList<String>();
+		Log4JUtils2.getLogger().debug("<<<<<<" + optimizeGroup);
+		Collections.sort(optimizeGroup);
+		for (Group group : optimizeGroup) {
+			if (group instanceof FixedGroup) {
+				key += "_FixedGroup"
+						+ group.getKey().replace(",", "").replace("[", "").replace("]", "").replace(";", "")
+								.replace(" ", "");
+				fcs.addAll(group.getPuids());
+			}
+			if (group instanceof DynamicGroup) {
+				key += "_DynamicGroup"
+						+ group.getKey().replace(",", "").replace("[", "").replace("]", "").replace(";", "")
+								.replace(" ", "");
+				fcs.addAll(group.getPuids());
+			}
+		}
+		Log4JUtils2.getLogger().debug("<<<<<< FCs:" + fcs);
+		Collections.sort(optimizeGroup);
+		this.targetGroup = new TargetGroup("8871_SLOT_" + key, fcs);
 		this.max = max;
 	}
 
