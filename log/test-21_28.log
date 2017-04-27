@@ -20953,7 +20953,7 @@ rule rule_8871_SLOT_110_1 extends MinMax {
 20:02:14.753 INFO  org.group.main.MainClass 266 main - ======
 20:02:14.753 INFO  org.group.main.MainClass 267 main - ======
 20:02:14.753 INFO  org.group.main.MainClass 268 main - ======
-20:02:14.753 INFO  org.group.main.MainClass 269 main - ====== 优化后的Rule size: 1473
+20:02:14.753 INFO  org.group.main.MainClass 269 main - ====== 优化后的Rule size: 1473 全部结束
 20:02:14.753 INFO  org.group.main.MainClass 273 main - ====== 需要建立TargetGroup.size: 59
 20:02:14.753 INFO  org.group.main.MainClass 278 main - 
 rule rule_8871_SLOT_1_1 extends MinMax {
