@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
+import org.group.bean.rule.DynamicGroup;
 import org.group.bean.rule.Group;
 import org.junit.Test;
 
@@ -48,25 +49,24 @@ public class Test1 {
 
 	@Test
 	public void testListIterator() {
-		List<String> l = new ArrayList();
+		List<String> l = new ArrayList<String>();
 		l.add("aa");
 		l.add("bb");
-		l.add("bb");
 		l.add("cc");
+		l.add("dd");
 		ListIterator<String> iter = l.listIterator();
+		System.out.println(l);
 		while (iter.hasNext()) {
 			String str = iter.next();
-			if ("bb".equals(str)) {
-				iter.remove();
-				iter.add("ddd");
-				iter.add("bb");
-//				iter.previous();
-			}
-			System.out.println(str);
-//			System.out.println("---" + str);
+
+			iter.remove();
+			System.out.println(l + " " + l.size());
+			iter.add(str);
+			System.out.println(l + " " + l.size());
+			// iter.previous();
+			// System.out.println("---" + str);
 
 		}
-		iter.add("bb");
 		System.out.println(l);
 
 		/*
@@ -103,19 +103,23 @@ public class Test1 {
 		Group g1 = new Group("123", Arrays.asList("1", "2", "3"));
 		Group g2 = new Group("456", Arrays.asList("4", "5", "6"));
 		Group g3 = new Group("789", Arrays.asList("4", "5", "6"));
+		// Group G4 = g3;
 		List<Group> list1 = new ArrayList<Group>();
 		List<Group> list2 = new ArrayList<Group>();
+		List<Group> list3 = new ArrayList<Group>();
 		list1.add(g1);
 		list1.add(g2);
 		list1.add(g3);
+
 		list2.add(g1);
-		list2.add(g2);
 		list2.add(g3);
+		// list2.add(G4);
 		
-		
+		list3.add(g3);
+
 		temp.add(list1);
-		System.out.println(temp.size());
 //		temp.add(list2);
+		System.out.println(temp.size());
 		System.out.println(temp.size());
 		System.out.println(temp.contains(list2));
 
@@ -124,5 +128,18 @@ public class Test1 {
 		System.out.println(list1.containsAll(list2));
 		System.out.println(list2.containsAll(list1));
 
+	}
+
+	@Test
+	public void testGroup() {
+		List<Integer> ints = new ArrayList<Integer>();
+		ints.add(1);
+		ints.add(2);
+		ints.add(3);
+		DynamicGroup dynamicGroup = new DynamicGroup("123", ints, Arrays.asList("1", "2", "3"));
+		List<Integer> intsss = new ArrayList<Integer>(dynamicGroup.getIdSlots());
+		// intsss = dynamicGroup.getIdSlots();
+		intsss.add(5);
+		System.out.println(dynamicGroup.getIdSlots());
 	}
 }

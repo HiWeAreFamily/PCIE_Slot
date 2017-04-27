@@ -87,7 +87,7 @@ public class CaculatorService {
 					cardSlotsDynamic.addAll(idDynamicSlot);
 				} else if (dynamicGroup.getKey().endsWith("A5FN;")) {
 					// B.
-					List<Integer> idDynamicSlot = dynamicGroup.getIdSlots();
+					List<Integer> idDynamicSlot = new ArrayList<Integer>(dynamicGroup.getIdSlots());
 					if (!"A5FN".equals(riserCard_1.getFc())) {
 						// 不满足动态条件.删除动态slot;
 						idDynamicSlot.remove(new Integer(3));
@@ -97,7 +97,7 @@ public class CaculatorService {
 					// C.
 					// TODO lemon confirm : if no A5FN, could this type group
 					// could install slot 3?
-					List<Integer> idDynamicSlot = dynamicGroup.getIdSlots();
+					List<Integer> idDynamicSlot = new ArrayList<Integer>(dynamicGroup.getIdSlots());
 					if (!"A5FN".equals(riserCard_1.getFc())) {
 						// 不满足动态条件.删除动态slot3;
 						idDynamicSlot.remove(new Integer(3));
@@ -109,7 +109,7 @@ public class CaculatorService {
 					cardSlotsDynamic.addAll(idDynamicSlot);
 				} else if (dynamicGroup.getKey().endsWith("ATE4_AUAF;")) {
 					// D.
-					List<Integer> idDynamicSlot = dynamicGroup.getIdSlots();
+					List<Integer> idDynamicSlot = new ArrayList<Integer>(dynamicGroup.getIdSlots());
 					if ("8871_MB_ATE4".equals(planar.getFc())) {
 						// 不满足动态条件.删除动态slot;
 						idDynamicSlot.remove(new Integer(5));

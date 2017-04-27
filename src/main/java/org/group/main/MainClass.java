@@ -10,9 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Vector;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import org.group.bean.condition.COMPortBracket;
 import org.group.bean.condition.Processer;
@@ -28,6 +26,7 @@ import org.group.service.CombinationService;
 import org.group.service.Conditions;
 import org.group.service.OptimizeService;
 import org.group.service.ReadExcelGetGroupService;
+import org.group.service.ThreadPoolExecutorFactory;
 
 import utils.log.Log4JUtils2;
 
@@ -132,17 +131,15 @@ public class MainClass {
 		Log4JUtils2.getLogger().info("====== 需要优化RuleMap size:" + ruleMap.size());
 		int conditionIndex = 0;
 		int ruleIndex = 0;
-		ThreadPoolExecutor executorService = new ThreadPoolExecutor(180, 180, 10, TimeUnit.SECONDS,
-				new ArrayBlockingQueue<Runnable>(1200), new ThreadPoolExecutor.AbortPolicy());
-		
-		
+		ThreadPoolExecutor executorService = ThreadPoolExecutorFactory.getInstance();
+
 		for (Entry<RuleCondition, Map<Integer, List<List<Group>>>> entry : ruleMap.entrySet()) {
 			Log4JUtils2.getLogger().info("===== Start 第" + (++conditionIndex) + "组;\t条件为: " + entry.getKey());
 
 			Map<Integer, List<List<Group>>> maxAndTargetResults = entry.getValue();
 
 			for (Entry<Integer, List<List<Group>>> maxAndTargetResult : maxAndTargetResults.entrySet()) {
-				
+
 				if (maxAndTargetResult.getValue().size() == 0) {
 					Log4JUtils2.getLogger().info("====== 该条件下 Max=" + maxAndTargetResult.getKey() + "的Rule 不存在");
 				} else {
@@ -162,8 +159,9 @@ public class MainClass {
 			} else {
 				Log4JUtils2.getLogger().info("====== 执行线程数:" + executorService.getActiveCount());
 				Log4JUtils2.getLogger().info("====== 队列中排队的任务的数量:" + executorService.getQueue().size());
-//				Log4JUtils2.getLogger().info(
-//						"====== 队列中排队的任务的数量:" + (1200 - executorService.getQueue().remainingCapacity()));
+				// Log4JUtils2.getLogger().info(
+				// "====== 队列中排队的任务的数量:" + (1200 -
+				// executorService.getQueue().remainingCapacity()));
 			}
 			try {
 				Thread.sleep(5000);

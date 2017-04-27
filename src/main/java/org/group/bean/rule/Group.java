@@ -76,4 +76,16 @@ public class Group implements Comparable<Group> {
 		return val;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (obj instanceof Group) {
+			Group o = (Group) obj;
+			return this.getKey().equals(o.getKey());
+		} else {
+			return false;
+		}
+
+	}
+
 }

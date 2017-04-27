@@ -4,7 +4,7 @@ import java.util.List;
 
 public class DynamicGroup extends Group {
 
-	public List<Integer> idSlots;
+	private List<Integer> idSlots;
 	public List<Integer> extraSlot;
 
 	public DynamicGroup() {
