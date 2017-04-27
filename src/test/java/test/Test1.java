@@ -70,6 +70,7 @@ public class Test1 {
 //			System.out.println("---" + str);
 
 		}
+		iter.add("bb");
 		System.out.println(l);
 
 		/*

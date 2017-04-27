@@ -45,6 +45,7 @@ public class OptimizeService extends Thread {
 
 	@Override
 	public void run() {
+		boolean flag = true;
 		List<List<Group>> optimizeGroups = new ArrayList<List<Group>>();
 		try {
 			List<List<Group>> targetGroups = maxTargetresult.getValue();
@@ -53,6 +54,7 @@ public class OptimizeService extends Thread {
 					"====== 该条件下 Max=" + maxTargetresult.getKey() + ";压缩前数量:" + targetGroups.size() + "压缩后数量:"
 							+ optimizeGroups.size());
 		} catch (Exception e) {
+			flag = false;
 			// TODO Auto-generated catch block
 			Log4JUtils2.getLogger().error("****** ERROR 检测第一部分异常信息异常Start：");
 			Log4JUtils2.getLogger().error(e);
@@ -71,7 +73,7 @@ public class OptimizeService extends Thread {
 		// Log4JUtils2.getLogger().info("<<<<<< " + (++i) + "" +
 		// target);
 		// }
-
+		List<MinMaxRule> minMaxRulecopy = new ArrayList<MinMaxRule>();
 		try {
 			/* 呈现具体的rule */
 			int ruleIndex = 0;
@@ -83,6 +85,7 @@ public class OptimizeService extends Thread {
 				minMaxRules.add(minMaxRule);
 			}
 		} catch (Exception e) {
+			flag = false;
 			Log4JUtils2.getLogger().error("****** ERROR 检测第二部分异常信息异常Start：");
 			Log4JUtils2.getLogger().error(e);
 			StackTraceElement[] error = e.getStackTrace();
@@ -92,6 +95,13 @@ public class OptimizeService extends Thread {
 			System.out.println("*******************************");
 			e.printStackTrace();
 			Log4JUtils2.getLogger().error("****** ERROR 异常End：");
+
+		}
+		if (flag) {// true;
+			minMaxRules.addAll(minMaxRulecopy);
+		} else {//false
+			Log4JUtils2.getLogger().info("====== Fail, Restart a new Tread!");
+			this.start();
 		}
 	}
 
