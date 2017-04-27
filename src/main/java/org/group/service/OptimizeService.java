@@ -24,6 +24,8 @@ public class OptimizeService extends Thread {
 	RuleCondition condition;
 	int conditionIndex;
 	Entry<Integer, List<List<Group>>> maxTargetresult;
+	boolean flag = true;
+	
 
 	/**
 	 * @param minMaxRules
@@ -45,7 +47,10 @@ public class OptimizeService extends Thread {
 
 	@Override
 	public void run() {
-		boolean flag = true;
+//		boolean flag = true;
+		if(!flag){
+			Log4JUtils2.getLogger().info("====== 证实确实,线程启动!");
+		}
 		List<List<Group>> optimizeGroups = new ArrayList<List<Group>>();
 		try {
 			List<List<Group>> targetGroups = maxTargetresult.getValue();
