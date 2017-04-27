@@ -132,7 +132,7 @@ public class MainClass {
 		Log4JUtils2.getLogger().info("====== 需要优化RuleMap size:" + ruleMap.size());
 		int conditionIndex = 0;
 		int ruleIndex = 0;
-		ThreadPoolExecutor executorService = new ThreadPoolExecutor(100, 150, 10, TimeUnit.SECONDS,
+		ThreadPoolExecutor executorService = new ThreadPoolExecutor(150, 150, 10, TimeUnit.SECONDS,
 				new ArrayBlockingQueue<Runnable>(1200), new ThreadPoolExecutor.AbortPolicy());
 		
 		
