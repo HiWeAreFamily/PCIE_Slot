@@ -54,10 +54,16 @@ public class OptimizeService extends Thread {
 							+ optimizeGroups.size());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			Log4JUtils2.getLogger().error("****** ERROR 异常信息：" + e.getMessage());
-			// Log4JUtils2.getLogger().error("异常对象：" + e.);
-			Log4JUtils2.getLogger().error("****** ERROR 调用堆栈：\n" + e.fillInStackTrace().getMessage());
-			Log4JUtils2.getLogger().error("****** ERROR 触发方法：" + e.getStackTrace());
+			Log4JUtils2.getLogger().error("****** ERROR 异常Start：");
+			Log4JUtils2.getLogger().error(e);
+			StackTraceElement[] error = e.getStackTrace();
+			for (StackTraceElement stackTraceElement : error) {
+				Log4JUtils2.getLogger().error(stackTraceElement.toString());
+			}
+			System.out.println("*******************************");
+			e.printStackTrace();
+			Log4JUtils2.getLogger().error("****** ERROR 异常End：");
+
 		}
 		// Debug :显示优化前的TargetGroups list
 		// int i = 0;
@@ -78,7 +84,7 @@ public class OptimizeService extends Thread {
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			Log4JUtils2.getLogger().error("****** ERROR 异常信息：" + e.getMessage());
+			Log4JUtils2.getLogger().error("****** ERROR 检测第二部分异常信息：" + e.getMessage());
 			// Log4JUtils2.getLogger().error("异常对象：" + e.);
 			Log4JUtils2.getLogger().error("****** ERROR 调用堆栈：\n" + e.fillInStackTrace().getMessage());
 			Log4JUtils2.getLogger().error("****** ERROR 触发方法：" + e.getStackTrace());
