@@ -101,7 +101,7 @@ public class TargetGroup {
 		// =100975,43947,5295,47610,115410,54028,115411;
 		// description = "PCIe Adapters";
 		// }
-		return "group" + key + " +extends ProductGroup {\r\n" + "\tgroupPuids=" + formatList(puids)
+		return "group " + key + " +extends ProductGroup {\r\n" + "\tgroupPuids=" + formatList(puids)
 				+ ";\r\n\tdescription = \"PCIe Adapters\";\r\n}";
 	}
 

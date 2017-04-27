@@ -87,7 +87,7 @@ public class OptimizeService extends Thread {
 				MinMaxRule minMaxRule = new MinMaxRule(conditionIndex + "_" + ruleIndex, condition, optimizeGroup,
 						maxTargetresult.getKey());
 				Log4JUtils2.getLogger().info("====== Rule:" + minMaxRule.formatDebugRule());
-				minMaxRules.add(minMaxRule);
+				minMaxRulecopy.add(minMaxRule);
 			}
 		} catch (Exception e) {
 			flag = false;
