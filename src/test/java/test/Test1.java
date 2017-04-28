@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.group.bean.rule.DynamicGroup;
 import org.group.bean.rule.Group;
@@ -85,6 +86,55 @@ public class Test1 {
 	}
 
 	@Test
+	public void testListIterator2() {
+		List<List<Group>> targetGroups = new ArrayList<List<Group>>();
+		Group g1 = new Group("123", Arrays.asList("1", "2", "3"));
+		Group g2 = new Group("456", Arrays.asList("4", "5", "6"));
+		Group g3 = new Group("789", Arrays.asList("4", "5", "6"));
+		// Group G4 = g3;
+		List<Group> list1 = new ArrayList<Group>();
+		List<Group> list2 = new ArrayList<Group>();
+		List<Group> list3 = new ArrayList<Group>();
+		list1.add(g1);
+		list1.add(g2);
+		list1.add(g3);
+
+		list2.add(g1);
+		list2.add(g3);
+
+		list3.add(g3);
+		targetGroups.add(list3);
+		targetGroups.add(list2);
+		targetGroups.add(list1);
+
+		CopyOnWriteArrayList<List<Group>> targetGroupsCopy = new CopyOnWriteArrayList<List<Group>>(targetGroups);
+
+		List<List<Group>> optimizeGroups1 = new ArrayList<List<Group>>();
+		for (List<Group> target : targetGroupsCopy) {
+			System.out.println("List is" + target);
+			targetGroupsCopy.remove(target);
+			if (optimizeGroup(targetGroupsCopy, target)) {
+				optimizeGroups1.add(target);
+			}
+			targetGroupsCopy.add(target);
+		}
+
+		int i = targetGroupsCopy.size();
+	}
+
+	private boolean optimizeGroup(List<List<Group>> targetGroupsRemoved, List<Group> target) {
+		boolean special = true;
+		for (List<Group> itemGroup : targetGroupsRemoved) {
+			if (itemGroup.containsAll(target)) {
+				special = false;
+				break;
+			}
+		}
+		return special;
+
+	}
+
+	@Test
 	public void addSet() {
 		String a = new String("123hhhh");
 		String b = new String("123hhhh");
@@ -114,11 +164,11 @@ public class Test1 {
 		list2.add(g1);
 		list2.add(g3);
 		// list2.add(G4);
-		
+
 		list3.add(g3);
 
 		temp.add(list1);
-//		temp.add(list2);
+		// temp.add(list2);
 		System.out.println(temp.size());
 		System.out.println(temp.size());
 		System.out.println(temp.contains(list2));
