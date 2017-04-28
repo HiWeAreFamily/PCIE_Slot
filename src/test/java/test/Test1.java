@@ -104,8 +104,10 @@ public class Test1 {
 
 		list3.add(g3);
 		targetGroups.add(list3);
-		targetGroups.add(list2);
+//		targetGroups.add(list2);
 		targetGroups.add(list1);
+		
+		System.out.println(targetGroups.contains(list2));
 
 		CopyOnWriteArrayList<List<Group>> targetGroupsCopy = new CopyOnWriteArrayList<List<Group>>(targetGroups);
 
