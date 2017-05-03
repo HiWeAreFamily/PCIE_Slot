@@ -5,10 +5,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map.Entry;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.Set;
 import java.util.Vector;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import org.group.bean.optimize.RuleCondition;
 import org.group.bean.rule.Group;
@@ -39,7 +38,7 @@ public class OptimizeService extends Thread {
 	 *            Max 和 所有待优化List<List<Group>>
 	 */
 	public OptimizeService(Vector<MinMaxRule> minMaxRules, RuleCondition condition, int conditionIndex,
-	        Entry<Integer, List<List<Group>>> maxTargetresult) {
+			Entry<Integer, List<List<Group>>> maxTargetresult) {
 		this.minMaxRules = minMaxRules;
 		this.condition = condition;
 		this.conditionIndex = conditionIndex;
@@ -57,7 +56,8 @@ public class OptimizeService extends Thread {
 			List<List<Group>> targetGroups = maxTargetresult.getValue();
 			optimizeGroups = optimizeGroupListNew(targetGroups);
 			Log4JUtils2.getLogger().info(
-			        "====== 该条件下 Max=" + maxTargetresult.getKey() + ";压缩前数量:" + targetGroups.size() + "压缩后数量:" + optimizeGroups.size());
+					"====== 该条件下 Max=" + maxTargetresult.getKey() + ";压缩前数量:" + targetGroups.size() + "压缩后数量:"
+							+ optimizeGroups.size());
 		} catch (Exception e) {
 			flag = false;
 			// TODO Auto-generated catch block
@@ -84,9 +84,8 @@ public class OptimizeService extends Thread {
 			int ruleIndex = 0;
 			for (List<Group> optimizeGroup : optimizeGroups) {
 				ruleIndex++;
-				List<Group> optimizeGroupnew = new ArrayList<Group>(optimizeGroup);
-				MinMaxRule minMaxRule = new MinMaxRule("C" + conditionIndex + "_Max" + maxTargetresult.getKey() + "_Leo" + ruleIndex, condition,
-				        optimizeGroupnew, maxTargetresult.getKey());
+				MinMaxRule minMaxRule = new MinMaxRule("C" + conditionIndex + "_Max" + maxTargetresult.getKey()
+						+ "_Leo" + ruleIndex, condition, optimizeGroup, maxTargetresult.getKey());
 				Log4JUtils2.getLogger().info("====== Rule:" + minMaxRule.formatDebugRule());
 				minMaxRulecopy.add(minMaxRule);
 			}
@@ -171,37 +170,24 @@ public class OptimizeService extends Thread {
 	 * @return
 	 */
 	public List<List<Group>> optimizeGroupListNew(List<List<Group>> targetGroups) {
-		/*
-		 * List<List<Group>> optimizeGroups1 = new ArrayList<List<Group>>();
-		 * Set<List<Group>> optimizeGroups2 = new LinkedHashSet<List<Group>>();
-		 * ListIterator<List<Group>> targetGroupsIt =
-		 * targetGroups.listIterator(); while (targetGroupsIt.hasNext()) {
-		 * List<Group> target = targetGroupsIt.next(); targetGroupsIt.remove();
-		 * if (optimizeGroup(targetGroups, target)) {
-		 * optimizeGroups1.add(target); optimizeGroups2.add(target); }
-		 * targetGroupsIt.add(target); } if (optimizeGroups1.size() !=
-		 * optimizeGroups2.size()) { Log4JUtils2.getLogger().error(
-		 * "****** Error OptimizeGroups1.size != OptimizeGroups2.size; There are"
-		 * + optimizeGroups1.size() + " and " + optimizeGroups1.size()); }
-		 * 
-		 * return optimizeGroups1;
-		 */
-
 		List<List<Group>> optimizeGroups1 = new ArrayList<List<Group>>();
 		Set<List<Group>> optimizeGroups2 = new LinkedHashSet<List<Group>>();
-		CopyOnWriteArrayList<List<Group>> targetGroupsCopy = new CopyOnWriteArrayList<List<Group>>(targetGroups);
-		for (List<Group> target : targetGroupsCopy) {
-			targetGroupsCopy.remove(target);
-			if (optimizeGroup(targetGroupsCopy, target)) {
+
+		ListIterator<List<Group>> targetGroupsIt = targetGroups.listIterator();
+
+		while (targetGroupsIt.hasNext()) {
+			List<Group> target = targetGroupsIt.next();
+			targetGroupsIt.remove();
+			if (optimizeGroup(targetGroups, target)) {
 				optimizeGroups1.add(target);
 				optimizeGroups2.add(target);
 			}
-			targetGroupsCopy.add(target);
+			targetGroupsIt.add(target);
 		}
 		if (optimizeGroups1.size() != optimizeGroups2.size()) {
 			Log4JUtils2.getLogger().error(
-			        "****** Error OptimizeGroups1.size != OptimizeGroups2.size; There are" + optimizeGroups1.size() + " and "
-			                + optimizeGroups1.size());
+					"****** Error OptimizeGroups1.size != OptimizeGroups2.size; There are" + optimizeGroups1.size()
+							+ " and " + optimizeGroups1.size());
 		}
 
 		return optimizeGroups1;
